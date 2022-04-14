@@ -1,0 +1,160 @@
+package graphics;
+
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+
+import net.miginfocom.swing.MigLayout;
+
+public class Events {
+	public static void main(String[] args) {
+		new Events();
+	}
+	
+	double price=0;
+	JFrame window=new JFrame("Ice Cream Delivery Order");
+	JPanel panel=new JPanel(new MigLayout("wrap 5, insets 30")); 
+	
+	JMenu menu=new JMenu("Menu");
+	JMenuBar mb=new JMenuBar();
+	
+	
+	Events() {
+		window.setSize(600, 300);
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setLocationRelativeTo(null);
+		
+		setupGUI(panel);
+		setupMenu();
+		window.add(panel);
+		window.setVisible(true);
+		
+		
+	} 
+	void setupMenu() {
+		JMenuItem item1=new JMenuItem("Choose Icecream");
+		item1.addActionListener(new MyAL());
+		menu.add(item1);
+		
+		JMenuItem item2=new JMenuItem("Personal Info");
+		item2.addActionListener(new MyAL());
+		menu.add(item2);
+		
+		mb.add(menu);
+		window.setJMenuBar(mb);
+	}
+	
+	void setupGUI(JPanel p) { //sets up panel
+		p.setBackground(Color.CYAN);
+		JButton b1=new JButton("Order");
+		b1.addActionListener(new MyAL());
+		p.add(b1, "right align, skip 1");
+		
+	}
+	
+	void setupIcecream(JPanel p) {
+		p.removeAll();
+		p.setBackground(Color.pink);
+		p.add(new JLabel("Flavours"),"align center");
+		String[] s1= {"chocolate","vanilla","cookies & cream","mint choco","strawberry","caramel"};
+		JComboBox flavours = new JComboBox(s1);
+		p.add(flavours,"");
+		
+		p.add(new JLabel("Toppings $1"),"skip 2, wrap");
+		p.add(new JLabel("Sizes"));
+		
+		JCheckBox box1=new JCheckBox("Cookie Crumbs");
+		p.add(box1,"sizegroup g1, skip 3, wrap");
+		
+		JRadioButton rb1 = new JRadioButton("S) small $4.99");
+		p.add(rb1);
+		
+		JCheckBox box2=new JCheckBox("M&Ms");
+		p.add(box2,"sizegroup g1, skip 3, wrap");
+		
+		JRadioButton rb2 = new JRadioButton("M) medium $6.99");
+		p.add(rb2);
+		
+		JCheckBox box3=new JCheckBox("Strawberries");
+		p.add(box3,"sizegroup g1, skip 3, wrap");
+		
+		JRadioButton rb3 = new JRadioButton("L) large $8.99");
+		p.add(rb3);
+		
+		JCheckBox box4=new JCheckBox("Fuzzy Peach");
+		p.add(box4,"sizegroup g1, skip 3, wrap");
+		
+		JCheckBox box5=new JCheckBox("Gummies");
+		p.add(box5,"sizegroup g1, skip 4, wrap");
+		
+		JCheckBox box6=new JCheckBox("Pecans");
+		p.add(box6,"sizegroup g1, skip 4, wrap");
+		
+		p.add(new JLabel("Price: $"+price),"");
+		
+		box1.addActionListener(new MyAL());
+		box2.addActionListener(new MyAL());
+		box3.addActionListener(new MyAL());
+		box4.addActionListener(new MyAL());
+		box5.addActionListener(new MyAL());
+		box6.addActionListener(new MyAL());
+		
+		
+		window.add(p);
+		p.revalidate();
+	}
+	
+	void setupInfo(JPanel p) {
+		p.removeAll();
+		p.setBackground(Color.green);
+		p.add(new JLabel("Name:"), "align right");
+		p.add(new JTextField("Full Name",20),"span 2, wrap");
+		
+		p.add(new JLabel("Cell phone:"), "align right");
+		p.add(new JTextField("Phone Number",10),"wrap");
+		
+		p.add(new JLabel("Address:"), "align right");
+		p.add(new JTextField("Address",10),"");
+		window.add(p);
+		p.revalidate();
+	}
+	
+	class MyAL implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+//			if (e.getActionCommand().equals("Order")) {
+//				setupOrder(panel);
+//			}
+			if (e.getActionCommand().equals("Choose Icecream")) {
+				System.out.println("i");
+				setupIcecream(panel);
+				return;
+			}
+			if (e.getActionCommand().equals("Personal Info")) {
+				setupInfo(panel);
+				return;
+			}
+			
+			//pricing
+			JCheckBox cb= (JCheckBox) e.getSource();
+			if (cb.isSelected()) {
+				price++;
+				window.add(panel);
+				panel.revalidate();
+			}
+		}
+		
+	}
+}
